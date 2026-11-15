@@ -1,1 +1,449 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DealsHub India - Best Curated Amazon Picks</title>
+    <style>
+        :root {
+            --primary-dark: #131921;
+            --secondary-dark: #232f3e;
+            --amazon-orange: #ff9900;
+            --amazon-orange-hover: #e68a00;
+            --bg-light: #f4f6f8;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header & Navbar */
+        header {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--amazon-orange);
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 450px;
+            display: flex;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--secondary-dark), var(--primary-dark));
+            color: var(--white);
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #d1d5db;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        /* Category Filter */
+        .categories {
+            max-width: 1200px;
+            margin: 25px auto 10px;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .cat-btn {
+            background-color: var(--white);
+            border: 1px solid #d1d5db;
+            padding: 8px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .cat-btn:hover, .cat-btn.active {
+            background-color: var(--amazon-orange);
+            color: var(--primary-dark);
+            border-color: var(--amazon-orange);
+            font-weight: 600;
+        }
+
+        /* Product Grid */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto 50px;
+            padding: 0 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .product-img-wrap {
+            width: 100%;
+            height: 230px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .product-img-wrap img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background-color: #cc0c39;
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .product-info {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-category {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .product-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .rating {
+            color: #ffa41c;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--amazon-orange);
+            color: var(--primary-dark);
+            text-decoration: none;
+            padding: 11px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+        }
+
+        .buy-btn:hover {
+            background-color: var(--amazon-orange-hover);
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer & Disclaimer */
+        footer {
+            background-color: var(--primary-dark);
+            color: #d1d5db;
+            padding: 35px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .disclaimer {
+            max-width: 800px;
+            margin: 0 auto 15px;
+            padding: 12px;
+            background-color: var(--secondary-dark);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #e5e7eb;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.6rem; }
+            .nav-container { flex-direction: column; align-items: stretch; }
+            .logo { text-align: center; }
+            .search-box { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Deals<span>Hub</span> India</a>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search products (e.g. Headphones, Watch, Laptop)...">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Top Trending Amazon Deals</h1>
+        <p>Handpicked best-selling electronics, home essentials, and fashion picks reviewed for you.</p>
+    </section>
+
+    <!-- Categories -->
+    <div class="categories" id="categoryContainer">
+        <button class="cat-btn active" data-category="All">All</button>
+        <button class="cat-btn" data-category="Electronics">Electronics</button>
+        <button class="cat-btn" data-category="Home & Kitchen">Home & Kitchen</button>
+        <button class="cat-btn" data-category="Fashion">Fashion</button>
+    </div>
+
+    <!-- Product Grid -->
+    <main class="container">
+        <div class="product-grid" id="productGrid"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="disclaimer">
+            <strong>Affiliate Disclosure:</strong> As an Amazon Associate, I earn from qualifying purchases. Product prices and availability are accurate as of the date/time indicated on Amazon and are subject to change.
+        </div>
+        <p>&copy; 2026 DealsHub India. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript to Manage Products -->
+    <script>
+        // फेक/डेमो इमेज के साथ प्रोडक्ट्स लिस्ट (बाद में आप अपनी असली इमेज और Affiliate लिंक लगा सकते हैं)
+        const products = [
+            {
+                id: 1,
+                title: "Wireless Over-Ear Noise Cancelling Headphones",
+                category: "Electronics",
+                badge: "Best Seller",
+                rating: "★★★★★ (4.7/5)",
+                description: "High-fidelity studio sound, Active Noise Cancellation & ultra-soft ear cushions.",
+                image: "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods-max-silver/thumbnail.webp",
+                affiliateLink: "https://www.amazon.in/?tag=YOUR_TAG_HERE"
+            },
+            {
+                id: 2,
+                title: "Smart Home Voice Assistant Speaker",
+                category: "Electronics",
+                badge: "Top Deal",
+                rating: "★★★★☆ (4.5/5)",
+                description: "360-degree rich audio, built-in smart home hub & hands-free voice control.",
+                image: "https://cdn.dummyjson.com/product-images/mobile-accessories/amazon-echo-plus/thumbnail.webp",
+                affiliateLink: "https://www.amazon.in/?tag=YOUR_TAG_HERE"
+            },
+            {
+                id: 3,
+                title: "Classic Brown Leather Strap Wrist Watch",
+                category: "Fashion",
+                badge: "Trending",
+                rating: "★★★★☆ (4.4/5)",
+                description: "Minimalist analog dial with genuine leather strap, perfect for casual & formal wear.",
+                image: "https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/thumbnail.webp",
+                affiliateLink: "https://www.amazon.in/?tag=YOUR_TAG_HERE"
+            },
+            {
+                id: 4,
+                title: "Pro 14-Inch Ultrabook Laptop (Space Grey)",
+                category: "Electronics",
+                badge: "Editor's Pick",
+                rating: "★★★★★ (4.8/5)",
+                description: "Retina display, blazing fast performance & all-day battery life for creators.",
+                image: "https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp",
+                affiliateLink: "https://www.amazon.in/?tag=YOUR_TAG_HERE"
+            },
+            {
+                id: 5,
+                title: "Stainless Steel Cooking Pot with Glass Lid",
+                category: "Home & Kitchen",
+                badge: "Budget Pick",
+                rating: "★★★★☆ (4.3/5)",
+                description: "Heavy-bottom induction friendly cookware pot with heat-resistant glass cover.",
+                image: "https://cdn.dummyjson.com/product-images/kitchen-accessories/silver-pot-with-glass-cap/1.webp",
+                affiliateLink: "https://www.amazon.in/?tag=YOUR_TAG_HERE"
+            },
+            {
+                id: 6,
+                title: "Matte Black Aluminium Travel Mug",
+                category: "Home & Kitchen",
+                badge: "Must Have",
+                rating: "★★★★☆ (4.4/5)",
+                description: "Durable sleek black aluminium cup ideal for both hot coffee & cold beverages.",
+                image: "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/thumbnail.webp",
+                affiliateLink: "https://www.amazon.in/?tag=YOUR_TAG_HERE"
+            }
+        ];
+
+        const productGrid = document.getElementById("productGrid");
+        const searchInput = document.getElementById("searchInput");
+        const catButtons = document.querySelectorAll(".cat-btn");
+
+        let currentCategory = "All";
+
+        function renderProducts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            productGrid.innerHTML = "";
+
+            const filtered = products.filter(product => {
+                const matchesCategory = currentCategory === "All" || product.category === currentCategory;
+                const matchesSearch = product.title.toLowerCase().includes(searchTerm) || 
+                                      product.description.toLowerCase().includes(searchTerm);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                productGrid.innerHTML = `<div class="no-results">No products found matching your search.</div>`;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const card = document.createElement("div");
+                card.className = "product-card";
+                card.innerHTML = `
+                    <div class="product-img-wrap">
+                        ${product.badge ? `<span class="badge">${product.badge}</span>` : ""}
+                        <img src="${product.image}" alt="${product.title}" onerror="this.src='https://placehold.co/300x220/f8fafc/131921?text=Product+Image'">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h3 class="product-title">${product.title}</h3>
+                        <p class="product-desc">${product.description}</p>
+                        <div class="rating">${product.rating}</div>
+                        <a href="${product.affiliateLink}" target="_blank" rel="nofollow sponsored noopener noreferrer" class="buy-btn">
+                            Check Price on Amazon &rarr;
+                        </a>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+        }
+
+        // Category filter click event
+        catButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                catButtons.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentCategory = btn.getAttribute("data-category");
+                renderProducts();
+            });
+        });
+
+        // Search input event
+        searchInput.addEventListener("input", renderProducts);
+
+        // Initial load
+        renderProducts();
+    </script>
+</body>
+</html>
